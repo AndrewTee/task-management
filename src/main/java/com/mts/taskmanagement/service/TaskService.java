@@ -1,17 +1,16 @@
 package com.mts.taskmanagement.service;
 
-import com.mts.taskmanagement.exception.TaskNotFoundException;
 import com.mts.taskmanagement.model.Task;
-import com.mts.taskmanagement.model.TaskStatus;
 import com.mts.taskmanagement.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.UUID;
-import java.util.concurrent.Future;
+
+import static com.mts.taskmanagement.model.TaskStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +19,8 @@ public class TaskService {
     private final TaskServiceAsync taskServiceAsync;
 
     public Task getTaskById(String id) {
-        return taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
+                String.format("Cannot find task with id %s", id)));
     }
 
     @Transactional
@@ -28,10 +28,18 @@ public class TaskService {
         String id = UUID.randomUUID().toString();
         task
                 .setId(id)
-                .setStatus(TaskStatus.CREATED);
-        taskServiceAsync.changeTaskStatus(task, TaskStatus.RUNNING, 2000);
-        taskServiceAsync.changeTaskStatus(task, TaskStatus.FINISHED, 120000);
+                .setStatus(CREATED)
+                .setLocalDateTime(LocalDateTime.now());
 
-        return taskRepository.save(task);
+        return saveAndChangeTask(task);
+    }
+
+    private Task saveAndChangeTask(Task task) throws InterruptedException {
+        taskRepository.save(task);
+
+        taskServiceAsync.changeTaskStatus(task, RUNNING, 2000);
+        taskServiceAsync.changeTaskStatus(task, FINISHED, 122000);
+
+        return task;
     }
 }
