@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.0.4.RELEASE'
         classpath 'com.bmuschko:gradle-docker-plugin:3.2.1'
     }
 }
@@ -12,7 +12,7 @@ plugins {
     id 'java'
     id 'groovy'
     id 'application'
-    id 'org.springframework.boot' version '1.5.9.RELEASE'
+    id 'org.springframework.boot' version '2.0.4.RELEASE'
 }
 
 apply plugin: 'com.bmuschko.docker-java-application'
@@ -21,12 +21,6 @@ group 'com.mts.taskmanagement'
 version = '0.0.1'
 
 sourceCompatibility = 1.8
-
-dependencyManagement {
-    imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Edgware.RELEASE'
-    }
-}
 
 repositories {
     mavenCentral()
