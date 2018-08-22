@@ -13,7 +13,7 @@ import javax.persistence.EntityNotFoundException;
 public class TaskControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Object> handleExceptionInternal(EntityNotFoundException ex) {
+    public ResponseEntity<Object> handleExceptionNotFoundEntity(EntityNotFoundException ex) {
         TaskApiError taskApiError = new TaskApiError(HttpStatus.NOT_FOUND, ex.getMessage());
 
         return buildResponseEntity(taskApiError);

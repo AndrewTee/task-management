@@ -23,9 +23,8 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> saveTask(@RequestBody @Valid Task task) throws InterruptedException {
-//        String id = taskService.saveTask(task).getId();
-        Task savedTask = taskService.saveTask(task);
-        return new ResponseEntity<Task>(savedTask, HttpStatus.ACCEPTED);
+    public ResponseEntity<String> saveTask(@RequestBody @Valid Task task) throws InterruptedException {
+        String id = taskService.saveTask(task).getId();
+        return new ResponseEntity<String>(id, HttpStatus.ACCEPTED);
     }
 }
