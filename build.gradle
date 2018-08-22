@@ -37,10 +37,6 @@ dependencies {
 }
 
 docker {
-    registryCredentials {
-        username = 'andrewdockerhub'
-        password = 'StonerDoom'
-    }
     javaApplication {
         baseImage = 'anapsix/alpine-java'
         tag = "andrewdockerhub/${project.name}:${project.version}"
