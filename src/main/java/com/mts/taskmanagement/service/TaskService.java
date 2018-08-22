@@ -6,8 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.mts.taskmanagement.model.TaskStatus.*;
@@ -19,8 +20,7 @@ public class TaskService {
     private final TaskServiceAsync taskServiceAsync;
 
     public Task getTaskById(String id) {
-        return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
-                String.format("Cannot find task with id %s", id)));
+        return Optional.of(taskRepository.findOne(id)).orElseThrow(NullPointerException::new);
     }
 
     @Transactional
@@ -29,7 +29,7 @@ public class TaskService {
         task
                 .setId(id)
                 .setStatus(CREATED)
-                .setLocalDateTime(LocalDateTime.now());
+                .setLocalDateTime(Timestamp.valueOf(LocalDateTime.now()));
 
         return saveAndChangeTask(task);
     }
