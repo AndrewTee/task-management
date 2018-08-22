@@ -3,12 +3,12 @@ package com.mts.taskmanagement.model;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Data
